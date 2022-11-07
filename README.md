@@ -6,5 +6,5 @@
 01|main.py|入口程序
 02|docker|docker打包镜像配置目录
 03|data|数据存储目录
-03|data\path_list.txt|需要备份的路径，一行一个
-03|data\data.json|每天备份的目录数据
+04|data\path_list.txt|需要备份的路径，一行一个
+05|data\data.json|每天备份的目录数据
