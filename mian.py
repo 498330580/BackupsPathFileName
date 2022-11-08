@@ -66,11 +66,12 @@ def run_one():
 # 主函数
 def main():
     print("开始运行")
+    run_one()
     path_list = read_txt('./data/path_list.txt')
     path_data = []
     for path in path_list:
-        print(f"正在扫描：{path}")
         path = path.strip()
+        print(f"正在扫描：{path}")
         if os.path.exists(path):
             data_files = scan_files(path)
             path_data.append(data_files)
