@@ -2,6 +2,7 @@
 FROM python:alpine3.10
 # 创建工作目录
 RUN mkdir -p /app
+RUN mkdir -p /backup
 
 # 指定语言，防止中文日志乱码
 ENV LANG en_US.UTF-8  

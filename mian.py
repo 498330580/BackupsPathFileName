@@ -55,19 +55,28 @@ def save_json(path: str, data: dict):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+# 运行判断
+def run_one():
+    # 判断path_list.txt文件是否存在，如果不存在则创建
+    if not os.path.exists("./data/path_list.txt"):
+        with open("./data/path_list.txt", "w", encoding="utf-8") as f:
+            f.write("/video")
+
+
 # 主函数
 def main():
+    print("开始运行")
     path_list = read_txt('./data/path_list.txt')
-
     path_data = []
-    print(path_list)
     for path in path_list:
+        print(f"正在扫描：{path}")
         path = path.strip()
         if os.path.exists(path):
             data_files = scan_files(path)
             path_data.append(data_files)
     data["data"] = path_data
     save_json("./data/data.json", data)
+    print("扫描完毕")
 
 if __name__ == '__main__':
     main()
