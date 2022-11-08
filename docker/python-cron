@@ -1,1 +1,1 @@
-*/10 * * * * nohup python3 /app/main.py >> /app/logs/main.log 2>&1 &
+*/60 * * * * nohup python3 /app/main.py >> /app/logs/main.log 2>&1 &
