@@ -1,6 +1,13 @@
 # -*- coding: UTF-8 -*-
 import os
+import sys
 import datetime
+import json
+
+
+# 设定工作目录为当前脚本目录
+jaoben_path = os.path.abspath(os.path.dirname(sys.argv[0])) # 当前脚本目录
+os.chdir(jaoben_path)   # 设定工作目录为脚本目录
 
 
 # 获取当前时间
@@ -12,7 +19,11 @@ data = {"time": str_time, "data": []}
 
 
 # 扫描指定目录，并返回目录下所有文件夹与文件结构字典
-def scan_files(path: str, code: int):
+def scan_files(path: str, code: int = 0) -> dict:
+    """
+    path: 需要扫描的路径
+    code: 路径层级(顶级为0)
+    """
     next_data = []
     files = []
     for item in os.scandir(path):
@@ -25,12 +36,12 @@ def scan_files(path: str, code: int):
 
 
 # 读取data目录中的txt，返回分行列表
-def read_txt(path):
+def read_txt(path: str) -> list:
     """
     path: path_list.txt文件路径
     """
-    with open(path, "r") as f:
-        print(f)
+    with open(path, "r", encoding='utf-8') as f:
+        pass
 
 
 # 保存扫描后的数据为json
@@ -39,7 +50,8 @@ def save_json(path: str, data: dict):
     path: 保存路径
     data：需要保存的数据
     """
-    pass
+    with open(path, "w", encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
 
 # 主函数
@@ -48,6 +60,7 @@ def main():
 
 if __name__ == '__main__':
     path = r'D:\Downloads\网易云音乐'
-    data_files = scan_files(path, 0)
+    data_files = scan_files(path)
     data["data"] = data_files
     print(data)
+    save_json("./data/data.json", data)
