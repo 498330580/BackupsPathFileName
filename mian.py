@@ -41,7 +41,8 @@ def read_txt(path: str) -> list:
     path: path_list.txt文件路径
     """
     with open(path, "r", encoding='utf-8') as f:
-        pass
+        data = f.readlines()
+    return data
 
 
 # 保存扫描后的数据为json
@@ -56,11 +57,17 @@ def save_json(path: str, data: dict):
 
 # 主函数
 def main():
-    pass
+    path_list = read_txt('./data/path_list.txt')
+
+    path_data = []
+    print(path_list)
+    for path in path_list:
+        path = path.strip()
+        if os.path.exists(path):
+            data_files = scan_files(path)
+            path_data.append(data_files)
+    data["data"] = path_data
+    save_json("./data/data.json", data)
 
 if __name__ == '__main__':
-    path = r'D:\Downloads\网易云音乐'
-    data_files = scan_files(path)
-    data["data"] = data_files
-    print(data)
-    save_json("./data/data.json", data)
+    main()
