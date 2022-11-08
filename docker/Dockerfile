@@ -10,18 +10,19 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 # 指定pip源，并更新pip
-COPY pip.conf /root/.pip/pip.conf
+COPY ./docker/pip.conf /root/.pip/pip.conf
 RUN pip install --upgrade pip
 
 # 安装依赖
 # COPY requirements.txt /app
+# COPY ./docker/requirements.txt /app
 # RUN pip install -I -r /app/requirements.txt
 
 # 添加项目文件到app目录
 COPY . /app
 
 # 添加定时任务
-COPY python-cron /etc/cron.d/python-cron
+COPY ./docker/python-cron /etc/cron.d/python-cron
 RUN chmod 0644 /etc/cron.d/python-cron
 RUN crontab /etc/cron.d/python-cron
 # RUN touch /app/logs/get_xiaosuo.log
