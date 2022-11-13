@@ -3,19 +3,16 @@ import os
 import sys
 import datetime
 import json
+import time
+
+
+# 定时时间
+CONFIG_TIME = 60
 
 
 # 设定工作目录为当前脚本目录
 jaoben_path = os.path.abspath(os.path.dirname(sys.argv[0])) # 当前脚本目录
 os.chdir(jaoben_path)   # 设定工作目录为脚本目录
-
-
-# 获取当前时间
-now_time = datetime.datetime.now()
-# 格式化时间字符串
-str_time = now_time.strftime("%Y-%m-%d %H:%M:%S")
-# 初始化存储
-data = {"time": str_time, "data": []}
 
 
 # 扫描指定目录，并返回目录下所有文件夹与文件结构字典
@@ -67,17 +64,34 @@ def run_one():
 def main():
     print("开始运行")
     run_one()
-    path_list = read_txt('./data/path_list.txt')
-    path_data = []
-    for path in path_list:
-        path = path.strip()
-        print(f"正在扫描：{path}")
-        if os.path.exists(path):
-            data_files = scan_files(path)
-            path_data.append(data_files)
-    data["data"] = path_data
-    save_json("./data/data.json", data)
-    print("扫描完毕")
+
+    # 获取ENV定时时间
+    TIME_ENV = os.getenv('TIME')
+    if TIME_ENV:
+        global CONFIG_TIME
+        CONFIG_TIME = int(TIME_ENV)
+    t = CONFIG_TIME
+    print(f"当前扫描时间间隔为{t}分钟")
+
+    while True:
+        # 初始化存储
+        data = {"time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "data": []}
+        print("-" * 60)
+        print(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}  开始扫描')
+        path_list = read_txt('./data/path_list.txt')
+        path_data = []
+        for path in path_list:
+            path = path.strip()
+            print(f"正在扫描：{path}")
+            if os.path.exists(path):
+                data_files = scan_files(path)
+                path_data.append(data_files)
+        data["data"] = path_data
+        save_json("./data/data.json", data)
+        print(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}  扫描完毕')
+        print("-" * 60)
+
+        time.sleep(t * 60)
 
 if __name__ == '__main__':
     main()

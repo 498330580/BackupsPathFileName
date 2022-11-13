@@ -8,15 +8,11 @@ RUN mkdir -p /backup
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
+ENV TIME 60
 
 # 指定pip源，并更新pip
 COPY ./docker/pip.conf /root/.pip/pip.conf
 RUN pip install --upgrade pip
-
-# 安装依赖
-# COPY requirements.txt /app
-# COPY ./docker/requirements.txt /app
-# RUN pip install -I -r /app/requirements.txt
 
 # 添加项目文件到app目录
 COPY . /app
@@ -32,3 +28,6 @@ VOLUME ['/app/data', "/app/logs"]
 
 # 指定工作目录
 WORKDIR /app
+
+# 运行
+CMD [ "python3", "/app/main.py" ]
